@@ -2,15 +2,17 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 import Swal from "sweetalert2";
+import { useCreateOrderMutation } from "../../redux/features/orders/ordersApi";
 
 const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalPrice = cartItems
     .reduce((acc, item) => acc + item.newPrice, 0)
     .toFixed(2);
-  const currentUser = true;
+  const { currentUser } = useAuth();
   const {
     register,
     handleSubmit,
@@ -18,7 +20,8 @@ const CheckoutPage = () => {
     formState: { errors },
   } = useForm();
 
-  const [createOrder, { isLoading, error }] = useState("Hello");
+  const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+
   const navigate = useNavigate();
 
   const [isChecked, setIsChecked] = useState(false);
@@ -54,8 +57,6 @@ const CheckoutPage = () => {
       alert("Failed to place an order");
     }
   };
-
-  console.log("onsubmit", onSubmit);
 
   if (isLoading) return <div>Loading....</div>;
   return (

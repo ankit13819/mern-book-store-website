@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [message, setMessage] = useState("");
+  const { loginUser, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -15,6 +17,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
+      await loginUser(data.email, data.password);
       alert("Login successful!");
       navigate("/");
     } catch (error) {

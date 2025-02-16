@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   HiMiniBars3CenterLeft,
   HiOutlineHeart,
@@ -10,6 +10,7 @@ import { HiOutlineUser } from "react-icons/hi";
 import avatarImg from "../assets/avatar.png";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useAuth } from "../context/AuthContext";
 
 const navigation = [
   { name: "Dashboard", href: "/user-dashboard" },
@@ -22,9 +23,13 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const cartItems = useSelector((state) => state.cart.cartItems);
 
-  const currentUser = false;
+  const navigate = useNavigate();
+
+  const { currentUser, logout } = useAuth();
+
   const handleLogOut = () => {
-    console.log("Hello");
+    logout();
+    navigate("/login");
   };
 
   const token = localStorage.getItem("token");
